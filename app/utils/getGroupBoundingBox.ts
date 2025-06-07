@@ -1,0 +1,114 @@
+import { type BoundingBox, type DocumentElement, type GroupElement, type ParsedDocument, type ReferenceObject } from "@/types/position";
+import parsedJson from "public/1.report.json";
+const json = parsedJson as unknown as ParsedDocument;
+
+
+/**
+ * 요소 ID로 문서에서 요소를 찾는 함수
+ */
+ function findElementById(elements: DocumentElement[], id: string): DocumentElement | DocumentElement[] | ReferenceObject[]| null {
+
+    if(id === '#/body') return elements;
+
+    for (const element of elements) {
+      if (element.self_ref === id) {
+        return element;
+      }
+      // 재귀적으로 자식에서도 검색
+      if (element.children && element.children.length > 0) {
+        // 아래를 불린으로 
+        const isFound = Boolean(element.children.some((child)=> child.$ref === id)) ;
+        
+        if (isFound) return element;
+      }
+    }
+    return null;
+  }
+  
+  /**
+   * 주어진 요소의 상위 그룹을 찾는 함수
+   */
+  function findParentGroup(elements: DocumentElement[], targetId: string): GroupElement | null {
+    const targetElement = findElementById(elements, targetId);
+    if (!targetElement) return null;
+    return targetElement as GroupElement;
+  }
+  
+  /**
+   * 여러 바운딩 박스를 감싸는 최소 바운딩 박스 계산
+   */
+  function calculateBoundingBox(bboxes: BoundingBox[]): BoundingBox | null {
+    if (bboxes.length === 0) return null;
+    
+    // 첫 번째 박스로 초기화
+    let minL = bboxes[0].l;
+    let minT = bboxes[0].t;
+    let maxR = bboxes[0].r;
+    let maxB = bboxes[0].b;
+    const coordOrigin = bboxes[0].coord_origin;
+    
+    // 모든 박스를 순회하면서 최소/최대 값 찾기
+    for (const bbox of bboxes) {
+      minL = Math.min(minL, bbox.l);
+      maxR = Math.max(maxR, bbox.r);
+      maxB = Math.min(maxB, bbox.b);
+      minT = Math.max(minT, bbox.t);
+    }
+    
+    return {
+      l: minL,
+      t: minT,
+      r: maxR,
+      b: maxB,
+      coord_origin: coordOrigin
+    };
+  }
+
+/**
+ * 그룹의 모든 자식 요소들을 감싸는 바운딩 박스 계산
+ */
+ export function getGroupBoundingBox(
+    targetElementId: string
+  ): BoundingBox | null {
+    // 1. 타겟 요소의 상위 그룹 찾기
+    const elements = json.groups;
+    const parentGroup = findParentGroup(elements, targetElementId);
+    if (!parentGroup) {
+      console.warn(`상위 그룹을 찾을 수 없습니다: ${targetElementId}`);
+      return null;
+    }
+    
+    // 2. 그룹의 모든 자식 요소들 수집
+    const childElements: DocumentElement[] = [];
+    for (const childRef of parentGroup.children) {
+      const childElement = findElementById(json.texts, childRef.$ref);
+      if (childElement) {
+        childElements.push(childElement);
+      }
+    }
+    
+    // 3. 자식 요소들의 바운딩 박스 수집
+    const bboxes: BoundingBox[] = [];
+    for (const child of childElements) {
+      if ('prov' in child && child.prov && child.prov.length > 0) {
+        // 각 요소의 모든 prov에서 bbox 수집
+        for (const prov of child.prov) {
+          bboxes.push(prov.bbox);
+        }
+      }
+    }
+    
+    // 4. 통합 바운딩 박스 계산
+    return calculateBoundingBox(bboxes);
+  }
+
+  export const convertMouseToPdfCoordinates = (mouseX, mouseY) => {
+    const pageRect = containerRef.getBoundingClientRect();
+    const relativeX = mouseX - pageRect.left;
+    const relativeY = mouseY - pageRect.top;
+    
+    const pdfX = relativeX / scale;
+    const pdfY = pageViewport.height - (relativeY / scale); // bottom-up 변환
+    
+    return { x: pdfX, y: pdfY };
+  }
