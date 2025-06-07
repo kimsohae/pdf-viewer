@@ -28,8 +28,9 @@ const json = parsedJson as unknown as ParsedDocument;
   /**
    * 주어진 요소의 상위 그룹을 찾는 함수
    */
-  function findParentGroup(elements: DocumentElement[], targetId: string): GroupElement | null {
-    const targetElement = findElementById(elements, targetId);
+  export function findParentGroup(targetId: string): GroupElement | null {
+    const {groups, pictures} = json;
+    const targetElement = findElementById([...groups, ...pictures], targetId);
     if (!targetElement) return null;
     return targetElement as GroupElement;
   }
@@ -68,15 +69,8 @@ const json = parsedJson as unknown as ParsedDocument;
  * 그룹의 모든 자식 요소들을 감싸는 바운딩 박스 계산
  */
  export function getGroupBoundingBox(
-    targetElementId: string
+    parentGroup: GroupElement
   ): BoundingBox | null {
-    // 1. 타겟 요소의 상위 그룹 찾기
-    const elements = json.groups;
-    const parentGroup = findParentGroup(elements, targetElementId);
-    if (!parentGroup) {
-      console.warn(`상위 그룹을 찾을 수 없습니다: ${targetElementId}`);
-      return null;
-    }
     
     // 2. 그룹의 모든 자식 요소들 수집
     const childElements: DocumentElement[] = [];

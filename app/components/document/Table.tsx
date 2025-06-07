@@ -1,7 +1,18 @@
-import { usePosition } from "@/contexts/PositionContext";
+import {
+  useHightlightAction,
+  useHightlightValue,
+} from "@/contexts/HighlightContext";
+import { useScrollToHighlighted } from "@/hooks/useScrollToHighlighted";
+import { Element } from "react-scroll";
 
 export default function Table({ table }) {
-  const { setPosition } = usePosition();
+  const { jsonRef: highlightedRef } = useHightlightValue();
+  const updatePosition = useHightlightAction();
+  const isHighlighted = useScrollToHighlighted({
+    highlightedRef,
+    selfRef: table.self_ref,
+  });
+
   const cells = table.data?.table_cells;
   if (!cells || cells.length === 0) return <div>[Empty Table]</div>;
 
@@ -32,35 +43,44 @@ export default function Table({ table }) {
   });
 
   const handleClick = () => {
-    setPosition(table.prov[0].bbox);
+    updatePosition({
+      jsonRef: table.self_ref,
+      pdfBbox: table.prov[0].bbox,
+    });
   };
 
   return (
-    <div className="overflow-x-auto my-4">
-      <table
-        className="table-auto border border-gray-400 w-full text-sm"
-        onClick={handleClick}
+    <Element name={isHighlighted ? "highlightedElement" : ""}>
+      <div
+        className={`overflow-x-auto my-4 ${
+          highlightedRef === table.self_ref ? "bg-yellow-200" : ""
+        }`}
       >
-        <tbody>
-          {grid.map((row, rowIndex) => (
-            <tr key={rowIndex} className="border-t border-gray-300">
-              {row.map((cell, colIndex) => {
-                if (!cell) return null;
-                return (
-                  <td
-                    key={colIndex}
-                    rowSpan={cell.rowSpan > 1 ? cell.rowSpan : undefined}
-                    colSpan={cell.colSpan > 1 ? cell.colSpan : undefined}
-                    className="border border-gray-300 p-2 align-top"
-                  >
-                    {cell.text}
-                  </td>
-                );
-              })}
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+        <table
+          className="table-auto border border-gray-400 w-full text-sm"
+          onClick={handleClick}
+        >
+          <tbody>
+            {grid.map((row, rowIndex) => (
+              <tr key={rowIndex} className="border-t border-gray-300">
+                {row.map((cell, colIndex) => {
+                  if (!cell) return null;
+                  return (
+                    <td
+                      key={colIndex}
+                      rowSpan={cell.rowSpan > 1 ? cell.rowSpan : undefined}
+                      colSpan={cell.colSpan > 1 ? cell.colSpan : undefined}
+                      className="border border-gray-300 p-2 align-top"
+                    >
+                      {cell.text}
+                    </td>
+                  );
+                })}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </Element>
   );
 }

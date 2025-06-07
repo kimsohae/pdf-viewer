@@ -1,8 +1,22 @@
-import { usePosition } from "@/contexts/PositionContext";
-import { getGroupBoundingBox } from "@/utils/getGroupBoundingBox";
+import {
+  useHightlightAction,
+  useHightlightValue,
+} from "@/contexts/HighlightContext";
+import { useScrollToHighlighted } from "@/hooks/useScrollToHighlighted";
+import {
+  findParentGroup,
+  getGroupBoundingBox,
+} from "@/utils/getGroupBoundingBox";
+import { Element } from "react-scroll";
 
 export default function Text({ element, jsonRef }) {
-  const { setPosition } = usePosition();
+  const { jsonRef: highlightedRef } = useHightlightValue();
+
+  const updateHighlight = useHightlightAction();
+  const isHighlighted = useScrollToHighlighted({
+    highlightedRef,
+    selfRef: element.self_ref,
+  });
 
   const { text, orig, prov: elProv } = element;
   if (!elProv) return;
@@ -15,22 +29,33 @@ export default function Text({ element, jsonRef }) {
     .join("");
 
   const handleClick = () => {
-    let prov = getGroupBoundingBox(jsonRef);
-    if (!prov) {
-      prov = elProv[0].bbox;
-      1;
+    const parentGroup = findParentGroup(jsonRef);
+    let prov = elProv[0].bbox;
+
+    console.log({ parentGroup });
+
+    if (parentGroup) {
+      const groupBbox = getGroupBoundingBox(parentGroup);
+      if (groupBbox) {
+        prov = groupBbox;
+      }
     }
-    setPosition(prov);
+    updateHighlight({
+      jsonRef: parentGroup?.self_ref || jsonRef,
+      pdfBbox: prov,
+    });
   };
 
   return (
-    <div className="mb-2">
-      <span
-        className="text-base text-gray-800 cursor-pointer"
-        onClick={handleClick}
-      >
-        {renderedText}
-      </span>
-    </div>
+    <Element name={isHighlighted ? "highlightedElement" : ""}>
+      <div className={`mb-2 ${highlightedRef === jsonRef && "bg-yellow-200"}`}>
+        <span
+          className="text-base text-gray-800 cursor-pointer"
+          onClick={handleClick}
+        >
+          {renderedText}
+        </span>
+      </div>
+    </Element>
   );
 }

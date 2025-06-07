@@ -16,7 +16,8 @@
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-pdf": "^9.2.1",
-    "react-router": "^7.5.3"
+    "react-router": "^7.5.3",
+    "react-scroll": "^1.9.3"
   },
   "devDependencies": {
     "@react-router/dev": "^7.5.3",
@@ -24,6 +25,7 @@
     "@types/node": "^20",
     "@types/react": "^19.1.2",
     "@types/react-dom": "^19.1.2",
+    "@types/react-scroll": "^1.8.10",
     "tailwindcss": "^4.1.4",
     "typescript": "^5.8.3",
     "vite": "^6.3.3",

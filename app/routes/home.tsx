@@ -1,5 +1,5 @@
-import { Pdf } from "@/components/Pdf";
 import type { Route } from "./+types/home";
+import Viewer from "@/components/Viewer";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -10,5 +10,5 @@ export function meta({}: Route.MetaArgs) {
 
 export default function Home() {
   // return <></>;
-  return <Pdf />;
+  return <Viewer />;
 }

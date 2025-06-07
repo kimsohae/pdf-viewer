@@ -30,7 +30,7 @@ export type ParsedDocument = {
     body: DocumentElement;
     groups: GroupElement[];
     texts: TextElement[];
-    // pictures: PictureElement[];
+    pictures: PictureElement[];
     tables: TableElement[];
   };
 
