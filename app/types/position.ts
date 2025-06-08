@@ -161,7 +161,7 @@ export interface GroupElement extends BaseDocumentElement {
 /**
  * 리스트 아이템 요소 (TextElement 확장)
  */
-export interface ListItemElement extends TextElement {
+export interface ListItemElement extends BaseDocumentElement {
   label: "list_item";
   /** 번호 매김 여부 */
   enumerated: boolean;
@@ -169,10 +169,23 @@ export interface ListItemElement extends TextElement {
   marker: string;
 }
 
+export interface PictureElement extends BaseDocumentElement {
+  label: 'picture';
+  /** 캡션들 */
+  captions: DocumentElement[];
+  /** 참조들 */
+  references: DocumentElement[];
+  /** 각주들 */
+  footnotes: DocumentElement[];
+  /** 이미지 데이터 */
+  image: ImageData;
+}
+
+
 /**
  * 통합 문서 요소 타입
  */
-export type DocumentElement = TextElement | TableElement | GroupElement | ListItemElement;
+export type DocumentElement = TextElement | TableElement | GroupElement | ListItemElement | PictureElement;
 
 // 타입 가드 함수들
 

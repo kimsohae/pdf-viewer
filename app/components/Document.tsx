@@ -1,10 +1,11 @@
+import type { ParsedDocument } from "@/types/position";
 import { parseRef, renderElement, resolveRef } from "@/utils/renderElements";
 
 interface Props extends React.HTMLAttributes<HTMLDivElement> {
-  paredJson: unknown;
+  paredJson: ParsedDocument;
 }
 
-export default function ParsedDocument({ paredJson, ...props }: Props) {
+export default function Document({ paredJson }: Props) {
   return (
     <section className="h-screen flex flex-col justify-center max-h-screen">
       <h2 className="text-lg font-semibold text-gray-900 p-4 flex-0">

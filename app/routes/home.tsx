@@ -3,8 +3,8 @@ import Viewer from "@/components/Viewer";
 
 export function meta({}: Route.MetaArgs) {
   return [
-    { title: "New React Router App" },
-    { name: "description", content: "Welcome to React Router!" },
+    { title: "사전 과제" },
+    { name: "description", content: "PDF viewer" },
   ];
 }
 

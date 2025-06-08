@@ -11,7 +11,6 @@ import "core-js/full/promise/with-resolvers.js";
 import "react-pdf/dist/esm/Page/AnnotationLayer.css";
 import "react-pdf/dist/esm/Page/TextLayer.css";
 import {
-  initialValue,
   useHightlightAction,
   useHightlightValue,
 } from "@/contexts/HighlightContext";
@@ -21,6 +20,7 @@ import {
 } from "@/utils/getGroupBoundingBox";
 import { animateScroll, Element } from "react-scroll";
 import { throttle } from "@/utils/throttle";
+import type { ParsedDocument } from "@/types/position";
 
 // import "@/styles/viewer.css";
 
@@ -29,20 +29,17 @@ import { throttle } from "@/utils/throttle";
  * https://github.com/wojtekmaj/react-pdf
  */
 
-console.log(pdfjs.version);
-
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 
 interface Props {
-  title?: string;
+  parsedJson: ParsedDocument;
+  fileSource: string;
 }
 
-const fileSource = "/public/1.report.pdf";
-
 const scale = 1;
-const padding = 8;
+const padding = 8; // 반투명 오버레이 padding
 
-export function Pdf({ parsedJson }) {
+export function Pdf({ parsedJson, fileSource }: Props) {
   const updateHighlight = useHightlightAction();
   const { pdfBbox: bbox } = useHightlightValue();
   const overlayStyle = {
@@ -51,7 +48,6 @@ export function Pdf({ parsedJson }) {
     width: `${bbox.r - bbox.l + padding * 2}px`,
     height: `${bbox.t - bbox.b + padding * 2}px`,
   };
-  const [pageNumber, setPageNumber] = useState(1);
   const container = document.getElementById("pdf");
   const containerHeight = container?.scrollHeight ?? 0;
   const containerViewportHeight = container?.clientHeight ?? 0;
@@ -67,15 +63,14 @@ export function Pdf({ parsedJson }) {
       try {
         // PDF.js를 사용해 페이지 정보 가져오기
         const pdf = await pdfjs.getDocument("/public/1.report.pdf").promise;
-        const pdfPage = await pdf.getPage(pageNumber);
+        const pdfPage = await pdf.getPage(1);
         const viewport = pdfPage.getViewport({ scale });
         setPageViewport(viewport);
-        console.log("viewport");
       } catch (error) {
         console.error("페이지 정보 로드 오류:", error);
       }
     },
-    [pageNumber, scale]
+    [scale]
   );
 
   // 마우스 위치를 PDF 좌표계로 변환하는 함수
@@ -132,7 +127,6 @@ export function Pdf({ parsedJson }) {
           jsonRef: parentGroup?.self_ref || targetRef,
           pdfBbox: prov,
         });
-        // setBbox(prov);
       }
     }
 
@@ -179,7 +173,7 @@ export function Pdf({ parsedJson }) {
 
   return (
     <Document file={fileSource}>
-      {[pageNumber].map((page, idx) => (
+      {[1].map((page, idx) => (
         <div
           key={idx}
           id="pdf"

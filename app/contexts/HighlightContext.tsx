@@ -1,6 +1,5 @@
 import type { BoundingBox } from "@/types/position";
 import React, { createContext, useContext, useState } from "react";
-import { animateScroll, scroller } from "react-scroll";
 
 interface Hightlight {
   jsonRef: string;
@@ -31,33 +30,9 @@ export const HightligthProvider = ({
   children: React.ReactNode;
 }) => {
   const [hightlight, setHighlight] = useState<Hightlight>(initialHightlight);
-  const container = document.getElementById("pdf");
-  const containerHeight = container?.scrollHeight ?? 0;
 
   const updateHighlight = (param: Partial<Hightlight>) => {
-    setHighlight((prev) => {
-      // const scrollTarget = containerHeight - hightlight.pdfBbox.t;
-      // animateScroll.scrollTo(scrollTarget, {
-      //   containerId: "pdf",
-      //   smooth: true,
-      //   duration: 300,
-      //   delay: 100,
-      // });
-
-      return { ...prev, ...param };
-    });
-
-    // scroller.scrollTo("highlightedElement", {
-    //   containerId: "documnet",
-    //   smooth: true,
-    //   duration: 300,
-    // });
-
-    // scroller.scrollTo("highlightedPdf", {
-    //   containerId: "pdf",
-    //   smooth: true,
-    //   duration: 300,
-    // });
+    setHighlight((prev) => ({ ...prev, ...param }));
   };
 
   return (
@@ -81,7 +56,7 @@ export const useHightlightAction = () => {
   const context = useContext(ActionContext);
   if (context === null) {
     throw new Error(
-      "useHighlightAction should be used within BookParamProvider"
+      "useHighlightAction should be used within HighlightProvider"
     );
   }
   return context;
