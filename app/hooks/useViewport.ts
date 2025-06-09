@@ -21,4 +21,3 @@ export function useViewport(fileSource: string) {
     onFirstPageLoadSuccess,
   };
 }
-

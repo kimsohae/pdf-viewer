@@ -1,6 +1,5 @@
-// Pdf.tsx – 정리된 레이아웃과 로직 유지 버전
 "use client";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Document, Page, pdfjs } from "react-pdf";
 import "core-js/full/promise/with-resolvers.js";
 import "react-pdf/dist/esm/Page/AnnotationLayer.css";
@@ -13,7 +12,8 @@ import {
 import { useViewport } from "@/hooks/useViewport";
 import { throttle } from "@/utils/throttle";
 import type { ParsedDocument } from "@/types/position";
-import { useRBushSearch } from "@/hooks/useRbushSearch";
+import { useRBushSearch } from "@/hooks/useRBushSearch";
+import Error from "@/components/fallback/Error";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 
@@ -77,11 +77,7 @@ export function Pdf({ parsedDoc, fileSource }: Props) {
   }, [pdfBbox]);
 
   if (loadError) {
-    return (
-      <div className="p-8 text-center text-red-600 font-semibold">
-        {loadError}
-      </div>
-    );
+    return <Error errorMessage={loadError} />;
   }
 
   return (
