@@ -2,11 +2,6 @@
 
 본 프로젝트는 PDF 문서와 해당 문서를 파싱한 JSON 데이터를 연결하여 양방향 인터랙션을 지원하는 React 기반 웹 뷰어입니다. 사용자는 마우스 오버, 클릭을 통해 PDF 문서와 JSON 데이터 간의 연관 정보를 직관적으로 탐색할 수 있습니다.
 
-```
-npm install
-npm run dev
-```
-
 ## 주요 기능
 
 ### ✅ 양방향 하이라이트
@@ -57,7 +52,7 @@ rbush (공간 인덱싱)
 ├── hooks
 │ ├── useViewport.ts // 첫 페이지 Viewport 저장
 │ ├── useRBushSearch.ts // RBush 인덱싱 및 검색
-│ ├── useScrollToHighlighted.ts // Document에서 활용:
+│ ├── useScrollToHighlighted.ts // Document에서 활용: 요소 클릭 시 pdf 이동
 │
 ├── contexts
 │ └── HighlightContext.tsx // 현재 하이라이트된 요소 상태관리
@@ -66,13 +61,9 @@ rbush (공간 인덱싱)
 │ └── position.ts // ParsedDocument 타입 정의
 ```
 
-실행 방법
+## 실행 방법
 
-yarn install
-yarn dev
-
-기타 사항
-
-샘플 PDF는 public/1.report.pdf 경로에 위치시켜 주세요.
-
-JSON은 parsedDoc 형태로 prop으로 주입됩니다.
+```
+npm install
+npm run dev
+```
