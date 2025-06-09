@@ -19,17 +19,17 @@ export const initialValue: BoundingBox = {
   coord_origin: "BOTTOMLEFT",
 };
 
-export const initialHightlight = {
+export const initialHighlight = {
   jsonRef: "",
   pdfBbox: initialValue,
 };
 
-export const HighligthProvider = ({
+export const HighlightProvider = ({
   children,
 }: {
   children: React.ReactNode;
 }) => {
-  const [hightlight, setHighlight] = useState<Highlight>(initialHightlight);
+  const [hightlight, setHighlight] = useState<Highlight>(initialHighlight);
 
   const updateHighlight = (param: Partial<Highlight>) => {
     setHighlight((prev) => ({ ...prev, ...param }));
