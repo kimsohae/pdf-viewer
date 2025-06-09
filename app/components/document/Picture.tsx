@@ -3,10 +3,16 @@ import {
   useHighlightValue,
 } from "@/contexts/HighlightContext";
 import { useScrollToHighlighted } from "@/hooks/useScrollToHighlighted";
+import type { ParsedDocument, PictureElement } from "@/types/position";
 import { renderElement, resolveRef, parseRef } from "@/utils/renderElements";
 import { Element } from "react-scroll";
 
-export default function Picture({ element, json }) {
+interface Props {
+  element: PictureElement;
+  json: ParsedDocument;
+}
+
+export default function Picture({ element, json }: Props) {
   const { jsonRef: highlightedRef } = useHighlightValue();
   const updateHighlight = useHighlightAction();
   const isHighlighted = useScrollToHighlighted({

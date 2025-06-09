@@ -3,9 +3,20 @@ import {
   useHighlightValue,
 } from "@/contexts/HighlightContext";
 import { useScrollToHighlighted } from "@/hooks/useScrollToHighlighted";
+import type { TableElement } from "@/types/position";
 import { Element } from "react-scroll";
 
-export default function Table({ table }) {
+interface Props {
+  table: TableElement;
+}
+
+interface CellType {
+  text: string;
+  rowSpan: number;
+  colSpan: number;
+}
+
+export default function Table({ table }: Props) {
   const { jsonRef: highlightedRef } = useHighlightValue();
   const updatePosition = useHighlightAction();
   const isHighlighted = useScrollToHighlighted({
@@ -23,7 +34,7 @@ export default function Table({ table }) {
     maxCol = Math.max(maxCol, cell.end_col_offset_idx);
   });
 
-  const grid = Array.from({ length: maxRow }, () =>
+  const grid: (CellType | null)[][] = Array.from({ length: maxRow }, () =>
     Array.from({ length: maxCol }, () => null)
   );
 
@@ -64,7 +75,7 @@ export default function Table({ table }) {
             {grid.map((row, rowIndex) => (
               <tr key={rowIndex} className="border-t border-gray-300">
                 {row.map((cell, colIndex) => {
-                  if (!cell) return null;
+                  if (!cell) return <td key={colIndex} />;
                   return (
                     <td
                       key={colIndex}

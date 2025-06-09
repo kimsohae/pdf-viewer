@@ -3,13 +3,19 @@ import {
   useHighlightValue,
 } from "@/contexts/HighlightContext";
 import { useScrollToHighlighted } from "@/hooks/useScrollToHighlighted";
+import type { TextElement } from "@/types/position";
 import {
   findParentGroup,
   getGroupBoundingBox,
 } from "@/utils/getGroupBoundingBox";
 import { Element } from "react-scroll";
 
-export default function Text({ element, jsonRef }) {
+interface Props {
+  element: TextElement;
+  jsonRef: string;
+}
+
+export default function Text({ element, jsonRef }: Props) {
   const { jsonRef: highlightedRef } = useHighlightValue();
 
   const updateHighlight = useHighlightAction();
