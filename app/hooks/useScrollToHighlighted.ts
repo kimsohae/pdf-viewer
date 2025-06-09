@@ -12,7 +12,7 @@ interface UseScrollToHighlightedParam {
 export function useScrollToHighlighted({
     highlightedRef,
     selfRef,
-    scrollTarget = "highlightedElement",
+    scrollTarget = "highlightedJson",
     containerId = "document",
   }:UseScrollToHighlightedParam) {
     const isHighlighted = highlightedRef === selfRef;

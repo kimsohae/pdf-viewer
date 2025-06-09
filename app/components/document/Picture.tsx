@@ -24,7 +24,7 @@ export default function Picture({ element, json }: Props) {
   };
 
   return (
-    <Element name={isHighlighted ? "highlightedElement" : ""}>
+    <Element name={isHighlighted ? "highlightedJson" : ""}>
       <div
         className={`flex flex-wrap gap-1 ${
           highlightedRef === element.self_ref ? "bg-yellow-200" : ""

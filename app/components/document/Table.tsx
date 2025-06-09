@@ -61,7 +61,7 @@ export default function Table({ table }: Props) {
   };
 
   return (
-    <Element name={isHighlighted ? "highlightedElement" : ""}>
+    <Element name={isHighlighted ? "highlightedJson" : ""}>
       <div
         className={`overflow-x-auto my-4 ${
           highlightedRef === table.self_ref ? "bg-yellow-200" : ""

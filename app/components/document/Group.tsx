@@ -17,7 +17,7 @@ export default function Group({ element, json }: Props) {
   });
 
   return (
-    <Element name={isHighlighted ? "highlightedElement" : ""}>
+    <Element name={isHighlighted ? "highlightedJson" : ""}>
       <div className={`pl-4 my-4 ${isHighlighted ? "bg-yellow-200" : ""}`}>
         {element.children.map((child, idx) => {
           // $ref 값을 직접 전달

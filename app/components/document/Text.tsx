@@ -53,7 +53,7 @@ export default function Text({ element, jsonRef }: Props) {
   };
 
   return (
-    <Element name={isHighlighted ? "highlightedElement" : ""}>
+    <Element name={isHighlighted ? "highlightedJson" : ""}>
       <div className={`mb-2 ${highlightedRef === jsonRef && "bg-yellow-200"}`}>
         <span
           className="text-base text-gray-800 cursor-pointer"
