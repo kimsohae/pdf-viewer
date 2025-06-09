@@ -1,87 +1,78 @@
-# Welcome to React Router!
+## PDF Interactive Viewer
 
-A modern, production-ready template for building full-stack React applications using React Router.
+본 프로젝트는 PDF 문서와 해당 문서를 파싱한 JSON 데이터를 연결하여 양방향 인터랙션을 지원하는 React 기반 웹 뷰어입니다. 사용자는 마우스 오버, 클릭을 통해 PDF 문서와 JSON 데이터 간의 연관 정보를 직관적으로 탐색할 수 있습니다.
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/remix-run/react-router-templates/tree/main/default)
-
-## Features
-
-- 🚀 Server-side rendering
-- ⚡️ Hot Module Replacement (HMR)
-- 📦 Asset bundling and optimization
-- 🔄 Data loading and mutations
-- 🔒 TypeScript by default
-- 🎉 TailwindCSS for styling
-- 📖 [React Router docs](https://reactrouter.com/)
-
-## Getting Started
-
-### Installation
-
-Install the dependencies:
-
-```bash
-npm install
 ```
-
-### Development
-
-Start the development server with HMR:
-
-```bash
+npm install
 npm run dev
 ```
 
-Your application will be available at `http://localhost:5173`.
+## 주요 기능
 
-## Building for Production
+### ✅ 양방향 하이라이트
 
-Create a production build:
+- PDF 영역을 마우스로 가리키면 관련된 JSON 요소가 강조 표시됩니다.
 
-```bash
-npm run build
+- JSON 요소를 클릭하면 PDF 상 해당 위치로 스크롤 및 강조됩니다.
+
+### ✅ 성능 최적화
+
+- 대용량 문서에서도 빠른 검색이 가능하도록 RBush 공간 인덱싱 적용
+- 마우스 이벤트 throttling 적용으로 렌더링 부하 감소
+
+### ✅ 오류 대응
+
+- PDF 파일 로딩 실패 시 fallback UI 제공
+
+### ✅ 코드 구조화
+
+핵심 로직은 다음과 같이 기능별 Hook으로 분리
+
+useViewport: PDF.js Viewport 관리
+
+useRBushSearch: RBush 공간 인덱싱 및 탐색
+
+useScrollToHighlighted: 강조 요소 자동 스크롤
+
+## 사용 기술
+
+React 18 (with TypeScript)
+
+react-pdf / pdf.js
+
+Tailwind CSS
+
+react-scroll
+
+rbush (공간 인덱싱)
+
+## 프로젝트 구조
+
+```
+├── components
+│ └── document // 파싱된 문서 렌더링(group, picture, table, text 분리)
+│ ├── Pdf.tsx // PDF 렌더링 및 마우스 상호작용
+│ ├── Viewer.tsx // Viewer 레이아웃
+│
+├── hooks
+│ ├── useViewport.ts // 첫 페이지 Viewport 저장
+│ ├── useRBushSearch.ts // RBush 인덱싱 및 검색
+│ ├── useScrollToHighlighted.ts // Document에서 활용:
+│
+├── contexts
+│ └── HighlightContext.tsx // 현재 하이라이트된 요소 상태관리
+│
+├── types
+│ └── position.ts // ParsedDocument 타입 정의
 ```
 
-## Deployment
+실행 방법
 
-### Docker Deployment
+yarn install
+yarn dev
 
-To build and run using Docker:
+기타 사항
 
-```bash
-docker build -t my-app .
+샘플 PDF는 public/1.report.pdf 경로에 위치시켜 주세요.
 
-# Run the container
-docker run -p 3000:3000 my-app
-```
-
-The containerized application can be deployed to any platform that supports Docker, including:
-
-- AWS ECS
-- Google Cloud Run
-- Azure Container Apps
-- Digital Ocean App Platform
-- Fly.io
-- Railway
-
-### DIY Deployment
-
-If you're familiar with deploying Node applications, the built-in app server is production-ready.
-
-Make sure to deploy the output of `npm run build`
-
-```
-├── package.json
-├── package-lock.json (or pnpm-lock.yaml, or bun.lockb)
-├── build/
-│   ├── client/    # Static assets
-│   └── server/    # Server-side code
-```
-
-## Styling
-
-This template comes with [Tailwind CSS](https://tailwindcss.com/) already configured for a simple default starting experience. You can use whatever CSS framework you prefer.
-
----
-
-Built with ❤️ using React Router.
+JSON은 parsedDoc 형태로 prop으로 주입됩니다.
