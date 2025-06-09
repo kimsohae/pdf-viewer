@@ -1,6 +1,6 @@
 import { type BoundingBox, type DocumentElement, type GroupElement, type ParsedDocument, type ReferenceObject } from "@/types/position";
-import parsedJson from "public/1.report.json";
-const json = parsedJson as unknown as ParsedDocument;
+import parsedDoc from "public/1.report.json";
+const json = parsedDoc as unknown as ParsedDocument;
 
 
 /**

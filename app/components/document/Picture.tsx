@@ -1,14 +1,14 @@
 import {
-  useHightlightAction,
-  useHightlightValue,
+  useHighlightAction,
+  useHighlightValue,
 } from "@/contexts/HighlightContext";
 import { useScrollToHighlighted } from "@/hooks/useScrollToHighlighted";
 import { renderElement, resolveRef, parseRef } from "@/utils/renderElements";
 import { Element } from "react-scroll";
 
 export default function Picture({ element, json }) {
-  const { jsonRef: highlightedRef } = useHightlightValue();
-  const updateHighlight = useHightlightAction();
+  const { jsonRef: highlightedRef } = useHighlightValue();
+  const updateHighlight = useHighlightAction();
   const isHighlighted = useScrollToHighlighted({
     highlightedRef,
     selfRef: element.self_ref,

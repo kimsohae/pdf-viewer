@@ -1,14 +1,14 @@
 import type { BoundingBox } from "@/types/position";
 import React, { createContext, useContext, useState } from "react";
 
-interface Hightlight {
+interface Highlight {
   jsonRef: string;
   pdfBbox: BoundingBox;
 }
 
-const ValueContext = createContext<Hightlight | null>(null);
+const ValueContext = createContext<Highlight | null>(null);
 const ActionContext = createContext<
-  ((param: Partial<Hightlight>) => void) | null
+  ((param: Partial<Highlight>) => void) | null
 >(null);
 
 export const initialValue: BoundingBox = {
@@ -24,14 +24,14 @@ export const initialHightlight = {
   pdfBbox: initialValue,
 };
 
-export const HightligthProvider = ({
+export const HighligthProvider = ({
   children,
 }: {
   children: React.ReactNode;
 }) => {
-  const [hightlight, setHighlight] = useState<Hightlight>(initialHightlight);
+  const [hightlight, setHighlight] = useState<Highlight>(initialHightlight);
 
-  const updateHighlight = (param: Partial<Hightlight>) => {
+  const updateHighlight = (param: Partial<Highlight>) => {
     setHighlight((prev) => ({ ...prev, ...param }));
   };
 
@@ -44,7 +44,7 @@ export const HightligthProvider = ({
   );
 };
 
-export const useHightlightValue = () => {
+export const useHighlightValue = () => {
   const context = useContext(ValueContext);
   if (context === null) {
     throw new Error("useHighlight should be used within BookParamProvider");
@@ -52,7 +52,7 @@ export const useHightlightValue = () => {
   return context;
 };
 
-export const useHightlightAction = () => {
+export const useHighlightAction = () => {
   const context = useContext(ActionContext);
   if (context === null) {
     throw new Error(

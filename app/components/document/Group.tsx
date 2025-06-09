@@ -1,10 +1,10 @@
-import { useHightlightValue } from "@/contexts/HighlightContext";
+import { useHighlightValue } from "@/contexts/HighlightContext";
 import { useScrollToHighlighted } from "@/hooks/useScrollToHighlighted";
 import { parseRef, renderElement, resolveRef } from "@/utils/renderElements";
 import { Element } from "react-scroll";
 
 export default function Group({ element, json }) {
-  const { jsonRef: highlightedRef } = useHightlightValue();
+  const { jsonRef: highlightedRef } = useHighlightValue();
   const isHighlighted = useScrollToHighlighted({
     highlightedRef,
     selfRef: element.self_ref,

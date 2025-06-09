@@ -1,13 +1,13 @@
 import {
-  useHightlightAction,
-  useHightlightValue,
+  useHighlightAction,
+  useHighlightValue,
 } from "@/contexts/HighlightContext";
 import { useScrollToHighlighted } from "@/hooks/useScrollToHighlighted";
 import { Element } from "react-scroll";
 
 export default function Table({ table }) {
-  const { jsonRef: highlightedRef } = useHightlightValue();
-  const updatePosition = useHightlightAction();
+  const { jsonRef: highlightedRef } = useHighlightValue();
+  const updatePosition = useHighlightAction();
   const isHighlighted = useScrollToHighlighted({
     highlightedRef,
     selfRef: table.self_ref,

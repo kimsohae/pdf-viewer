@@ -11,8 +11,8 @@ import "core-js/full/promise/with-resolvers.js";
 import "react-pdf/dist/esm/Page/AnnotationLayer.css";
 import "react-pdf/dist/esm/Page/TextLayer.css";
 import {
-  useHightlightAction,
-  useHightlightValue,
+  useHighlightAction,
+  useHighlightValue,
 } from "@/contexts/HighlightContext";
 import {
   findParentGroup,
@@ -32,16 +32,16 @@ import type { ParsedDocument } from "@/types/position";
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 
 interface Props {
-  parsedJson: ParsedDocument;
+  parsedDoc: ParsedDocument;
   fileSource: string;
 }
 
 const scale = 1;
 const padding = 8; // 반투명 오버레이 padding
 
-export function Pdf({ parsedJson, fileSource }: Props) {
-  const updateHighlight = useHightlightAction();
-  const { pdfBbox: bbox } = useHightlightValue();
+export function Pdf({ parsedDoc, fileSource }: Props) {
+  const updateHighlight = useHighlightAction();
+  const { pdfBbox: bbox } = useHighlightValue();
   const overlayStyle = {
     left: `${bbox.l * scale - padding}px`,
     bottom: `${bbox.b * scale - padding}px`,
@@ -98,8 +98,8 @@ export function Pdf({ parsedJson, fileSource }: Props) {
 
   // PDF 좌표로 해당하는 JSON 요소 찾기
   const findElementByCoordinates = useCallback((pdfX: number, pdfY: number) => {
-    // if (!parsedJson.elements) return null;
-    const { texts, pictures, tables } = parsedJson;
+    // if (!parsedDoc.elements) return null;
+    const { texts, pictures, tables } = parsedDoc;
 
     // parsedJson의 각 요소의 bbox와 비교
     for (const element of [...texts, ...pictures, ...tables]) {
