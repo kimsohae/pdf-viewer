@@ -11,7 +11,7 @@ export default function Viewer() {
       <div className="flex justify-center items-center">
         <Pdf parsedDoc={parsedDoc} fileSource={fileSource} />
       </div>
-      <Document paredJson={parsedDoc} />
+      <Document parsedDoc={parsedDoc} />
     </div>
   );
 }
