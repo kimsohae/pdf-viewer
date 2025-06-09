@@ -13,8 +13,10 @@
     "@react-router/serve": "^7.5.3",
     "core-js": "^3.42.0",
     "isbot": "^5.1.27",
+    "rbush": "^4.0.1",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
+    "react-error-boundary": "^6.0.0",
     "react-pdf": "^9.2.1",
     "react-router": "^7.5.3",
     "react-scroll": "^1.9.3"
@@ -23,6 +25,7 @@
     "@react-router/dev": "^7.5.3",
     "@tailwindcss/vite": "^4.1.4",
     "@types/node": "^20",
+    "@types/rbush": "^4.0.0",
     "@types/react": "^19.1.2",
     "@types/react-dom": "^19.1.2",
     "@types/react-scroll": "^1.8.10",
