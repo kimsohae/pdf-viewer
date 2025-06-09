@@ -1,4 +1,4 @@
-import { type BoundingBox, type DocumentElement, type GroupElement, type ParsedDocument, type ReferenceObject } from "@/types/position";
+import { isDocumentElement, type BoundingBox, type DocumentElement, type GroupElement, type ParsedDocument, type ReferenceObject } from "@/types/position";
 import parsedDoc from "public/1.report.json";
 const json = parsedDoc as unknown as ParsedDocument;
 
@@ -76,7 +76,7 @@ const json = parsedDoc as unknown as ParsedDocument;
     const childElements: DocumentElement[] = [];
     for (const childRef of parentGroup.children) {
       const childElement = findElementById(json.texts, childRef.$ref);
-      if (childElement) {
+      if (childElement && isDocumentElement(childElement)) {
         childElements.push(childElement);
       }
     }
@@ -94,15 +94,4 @@ const json = parsedDoc as unknown as ParsedDocument;
     
     // 4. 통합 바운딩 박스 계산
     return calculateBoundingBox(bboxes);
-  }
-
-  export const convertMouseToPdfCoordinates = (mouseX, mouseY) => {
-    const pageRect = containerRef.getBoundingClientRect();
-    const relativeX = mouseX - pageRect.left;
-    const relativeY = mouseY - pageRect.top;
-    
-    const pdfX = relativeX / scale;
-    const pdfY = pageViewport.height - (relativeY / scale); // bottom-up 변환
-    
-    return { x: pdfX, y: pdfY };
   }

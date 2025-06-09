@@ -189,6 +189,12 @@ export type DocumentElement = TextElement | TableElement | GroupElement | ListIt
 
 // 타입 가드 함수들
 
+export function isDocumentElement(
+  element: { [key: string]: any }
+): element is DocumentElement {
+  return "label" in element;
+}
+
 export function isReferenceObject(
   element: { [key: string]: any }
 ): element is ReferenceObject {
