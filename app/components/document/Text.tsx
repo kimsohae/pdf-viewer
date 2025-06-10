@@ -3,7 +3,7 @@ import {
   useHighlightValue,
 } from "@/contexts/HighlightContext";
 import { useScrollToHighlighted } from "@/hooks/useScrollToHighlighted";
-import type { TextElement } from "@/types/position";
+import type { TextElement } from "@/types/document";
 import {
   findParentGroup,
   getGroupBoundingBox,

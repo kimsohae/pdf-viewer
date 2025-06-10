@@ -1,4 +1,4 @@
-import type { BoundingBox } from "@/types/position";
+import type { BoundingBox } from "@/types/document";
 import React, { createContext, useContext, useState } from "react";
 
 interface Highlight {

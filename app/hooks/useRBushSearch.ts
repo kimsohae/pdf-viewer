@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import RBush from 'rbush';
 import { findParentGroup, getGroupBoundingBox } from "@/utils/getGroupBoundingBox";
-import type { ParsedDocument, BoundingBox } from "@/types/position";
+import type { ParsedDocument, BoundingBox } from "@/types/document";
 
 interface IndexedItem {
   minX: number;

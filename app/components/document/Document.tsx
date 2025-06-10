@@ -1,4 +1,4 @@
-import type { ParsedDocument } from "@/types/position";
+import type { ParsedDocument } from "@/types/document";
 import { parseRef, renderElement, resolveRef } from "@/utils/renderElements";
 
 interface Props extends React.HTMLAttributes<HTMLDivElement> {

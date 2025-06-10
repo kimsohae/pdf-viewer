@@ -1,4 +1,4 @@
-import type { ParsedDocument } from "@/types/position";
+import type { ParsedDocument } from "@/types/document";
 import { Pdf } from "@/components/Pdf";
 import Document from "@/components/document/Document";
 import Error from "@/components/fallback/Error";

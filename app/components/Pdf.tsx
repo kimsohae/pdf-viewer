@@ -11,7 +11,7 @@ import {
 } from "@/contexts/HighlightContext";
 import { useViewport } from "@/hooks/useViewport";
 import { throttle } from "@/utils/throttle";
-import type { ParsedDocument } from "@/types/position";
+import type { ParsedDocument } from "@/types/document";
 import { useRBushSearch } from "@/hooks/useRBushSearch";
 import Error from "@/components/fallback/Error";
 

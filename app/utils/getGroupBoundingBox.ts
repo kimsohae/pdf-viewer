@@ -1,4 +1,4 @@
-import { isDocumentElement, type BoundingBox, type DocumentElement, type GroupElement, type ParsedDocument, type ReferenceObject } from "@/types/position";
+import { isDocumentElement, type BoundingBox, type DocumentElement, type GroupElement, type ParsedDocument, type ReferenceObject } from "@/types/document";
 import parsedDoc from "public/1.report.json";
 const json = parsedDoc as unknown as ParsedDocument;
 

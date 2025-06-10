@@ -3,7 +3,7 @@ import {
   useHighlightValue,
 } from "@/contexts/HighlightContext";
 import { useScrollToHighlighted } from "@/hooks/useScrollToHighlighted";
-import type { TableElement } from "@/types/position";
+import type { TableElement } from "@/types/document";
 import { Element } from "react-scroll";
 
 interface Props {

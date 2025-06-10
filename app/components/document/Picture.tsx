@@ -3,7 +3,7 @@ import {
   useHighlightValue,
 } from "@/contexts/HighlightContext";
 import { useScrollToHighlighted } from "@/hooks/useScrollToHighlighted";
-import type { ParsedDocument, PictureElement } from "@/types/position";
+import type { ParsedDocument, PictureElement } from "@/types/document";
 import { renderElement, resolveRef, parseRef } from "@/utils/renderElements";
 import { Element } from "react-scroll";
 
