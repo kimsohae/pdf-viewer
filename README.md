@@ -1,6 +1,6 @@
 ## PDF Interactive Viewer
 
-본 프로젝트는 PDF 문서와 해당 문서를 파싱한 JSON 데이터를 연결하여 양방향 인터랙션을 지원하는 React 기반 웹 뷰어입니다. 사용자는 마우스 오버, 클릭을 통해 PDF 문서와 JSON 데이터 간의 연관 정보를 직관적으로 탐색할 수 있습니다.
+PDF 문서와 해당 문서를 파싱한 JSON 데이터를 연결하여 양방향 인터랙션을 지원하는 React 기반 웹 뷰어 프로젝트입니다. PDF 마우스 오버, 문서 클릭을 통해 PDF 문서와 JSON 데이터를 하이라이팅하며 탐색할 수 있습니다.
 
 ## 주요 기능
 
@@ -21,25 +21,25 @@
 
 ### ✅ 코드 구조화
 
-핵심 로직은 다음과 같이 기능별 Hook으로 분리
+핵심 로직은 다음과 같이 기능별 Hook으로 분리하였습니다.
 
-useViewport: PDF.js Viewport 관리
+- useViewport: PDF.js Viewport 관리
 
-useRBushSearch: RBush 공간 인덱싱 및 탐색
+- useRBushSearch: RBush 공간 인덱싱 및 탐색
 
-useScrollToHighlighted: 강조 요소 자동 스크롤
+- useScrollToHighlighted: 강조 요소 자동 스크롤
 
 ## 사용 기술
 
-React 18 (with TypeScript)
+- React 
 
-react-pdf / pdf.js
+- react-pdf 
 
-Tailwind CSS
+- Tailwind CSS
 
-react-scroll
+- react-scroll
 
-rbush (공간 인덱싱)
+- rbush (공간 인덱싱)
 
 ## 프로젝트 구조
 
@@ -58,7 +58,7 @@ rbush (공간 인덱싱)
 │ └── HighlightContext.tsx // 현재 하이라이트된 요소 상태관리
 │
 ├── types
-│ └── position.ts // ParsedDocument 타입 정의
+│ └── position.ts // 파싱된 document 타입 정의
 ```
 
 ## 실행 방법
