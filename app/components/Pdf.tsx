@@ -19,7 +19,7 @@ import Loading from "@/components/fallback/Loading";
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 
 const scale = 1;
-const padding = 8;
+const padding = 8; // 하이라이트 패딩
 
 interface Props {
   parsedDoc: ParsedDocument;
@@ -34,19 +34,21 @@ export function Pdf({ parsedDoc, fileSource }: Props) {
   const [numPages, setNumPages] = useState(0);
   const [loadError, setLoadError] = useState<string | null>(null);
 
-  const { pageViewport, onFirstPageLoadSuccess } = useViewport(fileSource);
+  const { pageViewport, onFirstPageLoadSuccess } = useViewport(
+    fileSource,
+    scale
+  );
   const { searchByPoint } = useRBushSearch(parsedDoc);
 
   const overlayStyle = useMemo(
     () => ({
       left: `${pdfBbox.l * scale - padding}px`,
       bottom: `${pdfBbox.b * scale - padding}px`,
-      width: `${pdfBbox.r - pdfBbox.l + padding * 2}px`,
-      height: `${pdfBbox.t - pdfBbox.b + padding * 2}px`,
+      width: `${(pdfBbox.r - pdfBbox.l) * scale + padding * 2}px`,
+      height: `${(pdfBbox.t - pdfBbox.b) * scale + padding * 2}px`,
     }),
-    [pdfBbox]
+    [pdfBbox, scale]
   );
-
   const scrollTarget =
     (containerRef?.scrollHeight ?? 0) -
     pdfBbox.t -
@@ -58,11 +60,12 @@ export function Pdf({ parsedDoc, fileSource }: Props) {
         if (!pageViewport || !containerRef) return;
         const rect = containerRef.getBoundingClientRect();
         const x = (e.clientX - rect.left) / scale;
-        const y = pageViewport.height - (e.clientY - rect.top) / scale;
+        const y = (pageViewport.height - (e.clientY - rect.top)) / scale;
 
         const el = searchByPoint(x, y);
 
-        if (el) updateHighlight(el);
+        // 기존 하이라이팅과 다른 경우에만 update
+        if (el && pdfBbox.b !== el.pdfBbox.b) updateHighlight(el);
       }, 100),
     [pageViewport, containerRef, searchByPoint]
   );
