@@ -1,3 +1,4 @@
+import { BODY_REF } from "@/constants/document";
 import { isDocumentElement, type BoundingBox, type DocumentElement, type GroupElement, type ParsedDocument, type ReferenceObject } from "@/types/document";
 
 /**
@@ -7,7 +8,7 @@ import { isDocumentElement, type BoundingBox, type DocumentElement, type GroupEl
  * @returns 
  */
  export function findElementById( elements: DocumentElement[], targetRef: string ): DocumentElement | DocumentElement[] | ReferenceObject[]| null {  
-  if(targetRef === '#/body') return elements;
+  if(targetRef === BODY_REF) return elements;
 
     for (const element of elements) {
       if (element.self_ref === targetRef) {

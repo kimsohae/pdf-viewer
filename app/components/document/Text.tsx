@@ -1,3 +1,4 @@
+import { BODY_REF } from "@/constants/document";
 import {
   useHighlightAction,
   useHighlightValue,
@@ -46,7 +47,7 @@ export default function Text({ element, jsonRef, json }: Props) {
     };
 
     // body가 parent가 아니면, parent 요소를 탐색한다
-    if (parentRef !== "#/body") {
+    if (parentRef !== BODY_REF) {
       const parentGroup = findElementById(
         [...json.groups, ...json.pictures, ...json.tables],
         parentRef
