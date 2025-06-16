@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import {
   useHighlightAction,
   useHighlightValue,
@@ -75,7 +76,7 @@ export default function Table({ table }: Props) {
             {grid.map((row, rowIndex) => (
               <tr key={rowIndex} className="border-t border-gray-300">
                 {row.map((cell, colIndex) => {
-                  if (!cell) return <></>;
+                  if (!cell) return <Fragment key={colIndex} />;
                   return (
                     <td
                       key={colIndex}
