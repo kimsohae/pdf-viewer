@@ -3,19 +3,21 @@ import {
   useHighlightValue,
 } from "@/contexts/HighlightContext";
 import { useScrollToHighlighted } from "@/hooks/useScrollToHighlighted";
-import type { TextElement } from "@/types/document";
 import {
-  findParentGroup,
-  getGroupBoundingBox,
-} from "@/utils/getGroupBoundingBox";
+  isDocumentElement,
+  type ParsedDocument,
+  type TextElement,
+} from "@/types/document";
+import { findElementById, getGroupBoundingBox } from "@/utils/getBoundingBox";
 import { Element } from "react-scroll";
 
 interface Props {
   element: TextElement;
+  json: ParsedDocument;
   jsonRef: string;
 }
 
-export default function Text({ element, jsonRef }: Props) {
+export default function Text({ element, jsonRef, json }: Props) {
   const { jsonRef: highlightedRef } = useHighlightValue();
 
   const updateHighlight = useHighlightAction();
@@ -35,19 +37,27 @@ export default function Text({ element, jsonRef }: Props) {
     .join("");
 
   const handleClick = () => {
-    const parentGroup = findParentGroup(jsonRef);
-    let prov = elProv[0].bbox;
+    const prov = elProv[0].bbox;
+    const parentRef = element.parent.$ref;
 
-    if (parentGroup) {
-      const groupBbox = getGroupBoundingBox(parentGroup);
-      if (groupBbox) {
-        prov = groupBbox;
+    const highlight = {
+      jsonRef,
+      pdfBbox: prov,
+    };
+
+    // body가 parent가 아니면, parent 요소를 탐색한다
+    if (parentRef !== "#/body") {
+      const parentGroup = findElementById(
+        [...json.groups, ...json.pictures, ...json.tables],
+        parentRef
+      );
+      if (parentGroup && isDocumentElement(parentGroup)) {
+        const groupBbox = getGroupBoundingBox(json, parentGroup);
+        highlight.jsonRef = parentRef;
+        highlight.pdfBbox = groupBbox || prov;
       }
     }
-    updateHighlight({
-      jsonRef: parentGroup?.self_ref || jsonRef,
-      pdfBbox: prov,
-    });
+    updateHighlight(highlight);
   };
 
   return (

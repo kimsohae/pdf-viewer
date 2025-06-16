@@ -1,24 +1,21 @@
 import { isDocumentElement, type BoundingBox, type DocumentElement, type GroupElement, type ParsedDocument, type ReferenceObject } from "@/types/document";
-import parsedDoc from "public/1.report.json";
-const json = parsedDoc as unknown as ParsedDocument;
-
 
 /**
  * 요소 ID로 문서에서 요소를 찾는 함수
+ * @param elements  탐색 대상 DcoumentElement[]
+ * @param targetRef 요소의 self_ref
+ * @returns 
  */
- function findElementById(elements: DocumentElement[], id: string): DocumentElement | DocumentElement[] | ReferenceObject[]| null {
-
-    if(id === '#/body') return elements;
+ export function findElementById( elements: DocumentElement[], targetRef: string ): DocumentElement | DocumentElement[] | ReferenceObject[]| null {  
+  if(targetRef === '#/body') return elements;
 
     for (const element of elements) {
-      if (element.self_ref === id) {
+      if (element.self_ref === targetRef) {
         return element;
       }
-      // 재귀적으로 자식에서도 검색
+      // 재귀적으로 자식에서도 검색 
       if (element.children && element.children.length > 0) {
-        // 아래를 불린으로 
-        const isFound = Boolean(element.children.some((child)=> child.$ref === id)) ;
-        
+        const isFound = Boolean(element.children.some((child)=> child.$ref === targetRef)) ;
         if (isFound) return element;
       }
     }
@@ -26,14 +23,18 @@ const json = parsedDoc as unknown as ParsedDocument;
   }
   
   /**
-   * 주어진 요소의 상위 그룹을 찾는 함수
+   * 주어진 요소의 부모 요소를 찾는 함수 
+   * @param elements  탐색 대상 DcoumentElement[]
+   * @param targetRef 요소의 self_ref
+   * @returns 
    */
-  export function findParentGroup(targetId: string): GroupElement | null {
-    const {groups, pictures} = json;
-    const targetElement = findElementById([...groups, ...pictures], targetId);
+  export function findParentGroup(elements: DocumentElement[], targetRef: string): GroupElement | null {
+    const targetElement = findElementById(elements, targetRef);
     if (!targetElement) return null;
     return targetElement as GroupElement;
   }
+
+
   
   /**
    * 여러 바운딩 박스를 감싸는 최소 바운딩 박스 계산
@@ -69,13 +70,15 @@ const json = parsedDoc as unknown as ParsedDocument;
  * 그룹의 모든 자식 요소들을 감싸는 바운딩 박스 계산
  */
  export function getGroupBoundingBox(
-    parentGroup: GroupElement
+    json: ParsedDocument,
+    parentGroup: DocumentElement
   ): BoundingBox | null {
-    
+
+
     // 2. 그룹의 모든 자식 요소들 수집
     const childElements: DocumentElement[] = [];
     for (const childRef of parentGroup.children) {
-      const childElement = findElementById(json.texts, childRef.$ref);
+      const childElement = findElementById(json.texts, childRef.$ref );
       if (childElement && isDocumentElement(childElement)) {
         childElements.push(childElement);
       }

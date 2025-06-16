@@ -17,7 +17,7 @@ export function renderElement(ref, element, json) {
   const type = path[0];
 
   if (type === "texts") {
-    return <Text element={element} jsonRef={ref} />;
+    return <Text element={element} json={json} jsonRef={ref} />;
   }
 
   if (type === "groups") {
