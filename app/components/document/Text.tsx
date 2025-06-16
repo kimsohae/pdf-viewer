@@ -38,8 +38,6 @@ export default function Text({ element, jsonRef }: Props) {
     const parentGroup = findParentGroup(jsonRef);
     let prov = elProv[0].bbox;
 
-    console.log({ parentGroup });
-
     if (parentGroup) {
       const groupBbox = getGroupBoundingBox(parentGroup);
       if (groupBbox) {

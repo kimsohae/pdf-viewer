@@ -25,7 +25,6 @@ export function renderElement(ref, element, json) {
   }
 
   if (type === "pictures") {
-    // const onClick;
     return <Picture element={element} json={json} />;
   }
 
