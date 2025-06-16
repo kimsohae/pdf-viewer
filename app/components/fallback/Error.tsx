@@ -1,6 +1,3 @@
-import React, { type ComponentType } from "react";
-import type { FallbackProps } from "react-error-boundary";
-
 interface Props {
   errorMessage?: string;
 }

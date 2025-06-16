@@ -14,6 +14,7 @@ import { throttle } from "@/utils/throttle";
 import type { ParsedDocument } from "@/types/document";
 import { useRBushSearch } from "@/hooks/useRBushSearch";
 import Error from "@/components/fallback/Error";
+import Loading from "@/components/fallback/Loading";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 
@@ -92,7 +93,8 @@ export function Pdf({ parsedDoc, fileSource }: Props) {
             key={i}
             pageNumber={i + 1}
             scale={scale}
-            loading={"로딩 중..."}
+            loading={<Loading />}
+            error={<Error />}
             onMouseMove={handleMouseMove}
             onMouseEnter={() => setIsMouseIn(true)}
             onMouseLeave={() => setIsMouseIn(false)}
