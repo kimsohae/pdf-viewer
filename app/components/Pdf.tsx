@@ -29,7 +29,7 @@ interface Props {
 export function Pdf({ parsedDoc, fileSource }: Props) {
   const updateHighlight = useHighlightAction();
   const { pdfBbox } = useHighlightValue();
-  const [isMouseIn, setIsMouseIn] = useState(false);
+  // const [isMouseIn, setIsMouseIn] = useState(false);
   const [containerRef, setContainerRef] = useState<HTMLElement | null>(null);
   const [numPages, setNumPages] = useState(0);
   const [loadError, setLoadError] = useState<string | null>(null);
@@ -56,19 +56,19 @@ export function Pdf({ parsedDoc, fileSource }: Props) {
     () =>
       throttle((e: React.MouseEvent<HTMLDivElement>) => {
         if (!pageViewport || !containerRef) return;
-
         const rect = containerRef.getBoundingClientRect();
         const x = (e.clientX - rect.left) / scale;
         const y = pageViewport.height - (e.clientY - rect.top) / scale;
 
         const el = searchByPoint(x, y);
+
         if (el) updateHighlight(el);
       }, 100),
     [pageViewport, containerRef, searchByPoint]
   );
 
   useEffect(() => {
-    if (!isMouseIn && containerRef) {
+    if (containerRef) {
       animateScroll.scrollTo(scrollTarget, {
         containerId: "pdf",
         smooth: true,
@@ -85,6 +85,7 @@ export function Pdf({ parsedDoc, fileSource }: Props) {
     <div className="h-screen overflow-y-scroll" id="pdf">
       <Document
         file={fileSource}
+        loading={<Loading />}
         onLoadSuccess={({ numPages }) => setNumPages(numPages)}
         onLoadError={(err) => setLoadError("PDF 로딩 실패: " + err.message)}
       >
@@ -96,8 +97,8 @@ export function Pdf({ parsedDoc, fileSource }: Props) {
             loading={<Loading />}
             error={<Error />}
             onMouseMove={handleMouseMove}
-            onMouseEnter={() => setIsMouseIn(true)}
-            onMouseLeave={() => setIsMouseIn(false)}
+            // onMouseEnter={() => setIsMouseIn(true)}
+            // onMouseLeave={() => setIsMouseIn(false)}
             onLoadSuccess={i === 0 ? onFirstPageLoadSuccess : undefined}
             className="relative"
             inputRef={setContainerRef}
