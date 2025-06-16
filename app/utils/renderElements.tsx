@@ -12,8 +12,7 @@ export function parseRef(ref) {
 }
 
 export function renderElement(ref, element, json) {
-  // pathOrRef가 문자열이면 $ref 값이고, 배열이면 기존 path
-  const path = typeof ref === "string" ? parseRef(ref) : ref;
+  const path = parseRef(ref);
   const type = path[0];
 
   if (type === "texts") {
