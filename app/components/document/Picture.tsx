@@ -14,22 +14,23 @@ interface Props {
 
 export default function Picture({ element, json }: Props) {
   const { jsonRef: highlightedRef } = useHighlightValue();
-  const updateHighlight = useHighlightAction();
+  // const updateHighlight = useHighlightAction();
+  const selfRef = element.self_ref;
   const isHighlighted = useScrollToHighlighted({
     highlightedRef,
-    selfRef: element.self_ref,
+    selfRef,
   });
-  const handleClick = () => {
-    updateHighlight({ pdfBbox: element.prov[0].bbox });
-  };
+  // const handleClick = () => {
+  //   updateHighlight({ pdfBbox: element.prov[0].bbox });
+  // };
 
   return (
-    <Element name={isHighlighted ? "highlightedJson" : ""}>
+    <Element name={selfRef} id={selfRef}>
       <div
         className={`flex flex-wrap gap-1 ${
-          highlightedRef === element.self_ref ? "bg-yellow-200" : ""
+          isHighlighted ? "bg-yellow-200" : ""
         }`}
-        onClick={handleClick}
+        // onClick={handleClick}
       >
         {element.children.map((child, idx) => {
           // $ref 값을 직접 전달

@@ -20,11 +20,11 @@ interface Props {
 
 export default function Text({ element, jsonRef, json }: Props) {
   const { jsonRef: highlightedRef } = useHighlightValue();
-
   const updateHighlight = useHighlightAction();
+  const selfRef = element.self_ref;
   const isHighlighted = useScrollToHighlighted({
     highlightedRef,
-    selfRef: element.self_ref,
+    selfRef,
   });
 
   const { text, orig, prov: elProv } = element;
@@ -37,7 +37,7 @@ export default function Text({ element, jsonRef, json }: Props) {
     .map((s) => s.text)
     .join("");
 
-  const handleClick = () => {
+  const handleClick = (e: React.MouseEvent) => {
     const prov = elProv[0].bbox;
     const parentRef = element.parent.$ref;
 
@@ -46,7 +46,6 @@ export default function Text({ element, jsonRef, json }: Props) {
       pdfBbox: prov,
     };
 
-    // body가 parent가 아니면, parent 요소를 탐색한다
     if (parentRef !== BODY_REF) {
       const parentGroup = findElementById(
         [...json.groups, ...json.pictures, ...json.tables],
@@ -59,11 +58,12 @@ export default function Text({ element, jsonRef, json }: Props) {
       }
     }
     updateHighlight(highlight);
+    e.stopPropagation();
   };
 
   return (
-    <Element name={isHighlighted ? "highlightedJson" : ""}>
-      <div className={`mb-2 ${highlightedRef === jsonRef && "bg-yellow-200"}`}>
+    <Element name={selfRef} id={selfRef}>
+      <div className={`mb-2 ${isHighlighted && "bg-yellow-200"}`}>
         <span
           className="text-base text-gray-800 cursor-pointer"
           onClick={handleClick}

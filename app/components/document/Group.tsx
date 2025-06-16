@@ -11,13 +11,15 @@ interface Props {
 
 export default function Group({ element, json }: Props) {
   const { jsonRef: highlightedRef } = useHighlightValue();
+
+  const selfRef = element.self_ref;
   const isHighlighted = useScrollToHighlighted({
     highlightedRef,
-    selfRef: element.self_ref,
+    selfRef,
   });
 
   return (
-    <Element name={isHighlighted ? "highlightedJson" : ""}>
+    <Element name={selfRef} id={selfRef}>
       <div className={`pl-4 my-4 ${isHighlighted ? "bg-yellow-200" : ""}`}>
         {element.children.map((child, idx) => {
           // $ref 값을 직접 전달

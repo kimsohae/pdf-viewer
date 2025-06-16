@@ -20,9 +20,10 @@ interface CellType {
 export default function Table({ table }: Props) {
   const { jsonRef: highlightedRef } = useHighlightValue();
   const updatePosition = useHighlightAction();
+  const selfRef = table.self_ref;
   const isHighlighted = useScrollToHighlighted({
     highlightedRef,
-    selfRef: table.self_ref,
+    selfRef: selfRef,
   });
 
   const cells = table.data?.table_cells;
@@ -62,10 +63,10 @@ export default function Table({ table }: Props) {
   };
 
   return (
-    <Element name={isHighlighted ? "highlightedJson" : ""}>
+    <Element name={selfRef} id={selfRef}>
       <div
         className={`overflow-x-auto my-4 ${
-          highlightedRef === table.self_ref ? "bg-yellow-200" : ""
+          isHighlighted ? "bg-yellow-200" : ""
         }`}
       >
         <table
