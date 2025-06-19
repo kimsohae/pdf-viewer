@@ -32,11 +32,6 @@ export default function Text({ element, jsonRef, json }: Props) {
   const baseText = text || orig;
   if (!baseText) return;
 
-  const renderedText = elProv
-    .map((entry) => ({ text: baseText, start: entry.charspan[0] }))
-    .map((s) => s.text)
-    .join("");
-
   const handleClick = (e: React.MouseEvent) => {
     const prov = elProv[0].bbox;
     const parentRef = element.parent.$ref;
@@ -46,6 +41,7 @@ export default function Text({ element, jsonRef, json }: Props) {
       pdfBbox: prov,
     };
 
+    // parent가 body가 아닌 경우: group/picture인 경우 parent를 찾는다
     if (parentRef !== BODY_REF) {
       const parentGroup = findElementById(
         [...json.groups, ...json.pictures, ...json.tables],
@@ -68,7 +64,7 @@ export default function Text({ element, jsonRef, json }: Props) {
           className="text-base text-gray-800 cursor-pointer"
           onClick={handleClick}
         >
-          {renderedText}
+          {baseText}
         </span>
       </div>
     </Element>
