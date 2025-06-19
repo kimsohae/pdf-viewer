@@ -187,6 +187,8 @@ export interface PictureElement extends BaseDocumentElement {
  */
 export type DocumentElement = TextElement | TableElement | GroupElement | ListItemElement | PictureElement;
 
+export type ElementParent = (GroupElement | PictureElement)[]
+
 // 타입 가드 함수들
 
 export function isDocumentElement(

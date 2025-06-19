@@ -1,5 +1,5 @@
 import { BODY_REF } from "@/constants/document";
-import { isDocumentElement, type BoundingBox, type DocumentElement, type GroupElement, type ParsedDocument, type ReferenceObject } from "@/types/document";
+import { isDocumentElement, type BoundingBox, type DocumentElement, type ElementParent, type GroupElement, type ParsedDocument, type ReferenceObject } from "@/types/document";
 
 /**
  * 요소 ID로 문서에서 요소를 찾는 함수
@@ -29,7 +29,7 @@ import { isDocumentElement, type BoundingBox, type DocumentElement, type GroupEl
    * @param targetRef 요소의 self_ref
    * @returns 
    */
-  export function findParentGroup(elements: DocumentElement[], targetRef: string): GroupElement | null {
+  export function findParentGroup(elements: ElementParent, targetRef: string): GroupElement | null {
     const targetElement = findElementById(elements, targetRef);
     if (!targetElement) return null;
     return targetElement as GroupElement;

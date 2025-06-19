@@ -38,7 +38,7 @@ export function useRBushSearch(parsedDoc: ParsedDocument) {
 
     const el = results[0].element;
     let prov = el.prov[0].bbox;
-    const parentGroup = findParentGroup([...parsedDoc.groups, ...parsedDoc.pictures, ...parsedDoc.tables], el.self_ref);
+    const parentGroup = findParentGroup([...parsedDoc.groups, ...parsedDoc.pictures], el.self_ref);
 
     if (parentGroup) {
       const groupBbox = getGroupBoundingBox(parsedDoc, parentGroup);
